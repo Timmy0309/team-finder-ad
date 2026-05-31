@@ -26,8 +26,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     phone = models.CharField(
         max_length=USER_PHONE_MAX_LENGTH,
         unique=True,
-        blank=True,
-        null=True,
     )
 
     github_url = models.URLField(blank=True)
@@ -75,6 +73,7 @@ class User(AbstractBaseUser, PermissionsMixin):
             font = ImageFont.truetype("arial.ttf", AVATAR_FONT_SIZE)
         except Exception:
             font = ImageFont.load_default()
+            font.size = AVATAR_FONT_SIZE
 
         bbox = draw.textbbox(AVATAR_TEXT_ANCHOR, letter, font=font)
         text_width = bbox[2] - bbox[0]

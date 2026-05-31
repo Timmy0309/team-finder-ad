@@ -7,9 +7,10 @@ from team_finder.services import paginate_queryset
 
 from .forms import (EditProfileForm, LoginForm, PasswordChangeUserForm,
                     RegisterForm)
-from .models import User
+from django.contrib.auth import get_user_model
 from .services import get_ordered_users
 
+User = get_user_model()
 
 def register_view(request):
     form = RegisterForm(request.POST or None)

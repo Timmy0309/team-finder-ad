@@ -12,9 +12,6 @@ class ProjectForm(GithubUrlValidationMixin, forms.ModelForm):
 
         widgets = {
             "status": forms.Select(
-                choices=[
-                    ("open", "Открыт"),
-                    ("closed", "Закрыт"),
-                ]
+                choices=Project.STATUS_CHOICES
             )
         }
