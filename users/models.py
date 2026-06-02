@@ -5,9 +5,10 @@ from django.core.files.base import ContentFile
 from django.db import models
 from PIL import Image, ImageDraw, ImageFont
 
-from team_finder.constants import (AVATAR_BACKGROUND_COLOR, AVATAR_FONT_SIZE,
-                                   AVATAR_SIZE, AVATAR_TEXT_ANCHOR,
-                                   AVATAR_TEXT_COLOR, AVATAR_VERTICAL_OFFSET,
+from team_finder.constants import (AVATAR_BACKGROUND_COLOR, AVATAR_FONT_NAME,
+                                   AVATAR_FONT_SIZE, AVATAR_SIZE,
+                                   AVATAR_TEXT_ANCHOR, AVATAR_TEXT_COLOR,
+                                   AVATAR_VERTICAL_OFFSET,
                                    USER_ABOUT_MAX_LENGTH, USER_NAME_MAX_LENGTH,
                                    USER_PHONE_MAX_LENGTH,
                                    USER_SURNAME_MAX_LENGTH)
@@ -25,7 +26,6 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     phone = models.CharField(
         max_length=USER_PHONE_MAX_LENGTH,
-        unique=True,
     )
 
     github_url = models.URLField(blank=True)
@@ -70,10 +70,9 @@ class User(AbstractBaseUser, PermissionsMixin):
         letter = self.name[0].upper() if self.name else "U"
 
         try:
-            font = ImageFont.truetype("arial.ttf", AVATAR_FONT_SIZE)
-        except Exception:
+            font = ImageFont.truetype(AVATAR_FONT_NAME, AVATAR_FONT_SIZE)
+        except OSError:
             font = ImageFont.load_default()
-            font.size = AVATAR_FONT_SIZE
 
         bbox = draw.textbbox(AVATAR_TEXT_ANCHOR, letter, font=font)
         text_width = bbox[2] - bbox[0]
